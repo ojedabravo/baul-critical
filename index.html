@@ -134,7 +134,7 @@
   <button id="adminToggleBtn" class="admin-btn">🔒 Modo Admin</button>
 </div>
 
-<h1>BAÚL - BOXES OF KUNDUN</h1>
+<h1>BAUL DEL CLAN CRITICAL</h1>
 
 <!-- PANEL DE ADMINISTRADOR (Oculto para el clan) -->
 <div class="controls" id="adminControls">
@@ -311,7 +311,7 @@
   // Botones de Admin
   adminToggleBtn.addEventListener('click', () => {
     const pass = prompt('Ingresa la contraseña de administrador:');
-    if (pass === 'elegidos123') {
+    if (pass === 'critical95') {
       adminControls.classList.toggle('active');
       adminToggleBtn.textContent = adminControls.classList.contains('active') ? '🔓 Ocultar Admin' : '🔒 Modo Admin';
     } else if (pass !== null) {
