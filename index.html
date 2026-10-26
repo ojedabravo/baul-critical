@@ -1,578 +1,523 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biblioteca & Guía ARGMU 99B - Anime Edition</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baúl MU Online - Clan CRITICAL</title>
+<!-- Firebase App (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<!-- Firebase Realtime Database (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    :root {
-      --bg-gradient: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: #6b11ff;
-      --pink-neon: #ff007f;
-      --cyan-neon: #00f0ff;
-      --yellow-neon: #ffea00;
-      --purple-accent: #6b11ff;
-      --text-dark: #1e1035;
-      --text-intro: #4a4a6a;
-      --box-bg: #ffffff;
-      --box-border: #e2e8f0;
-      --stat-bg: #f1f5f9;
-      --stat-border: #cbd5e1;
-      --stat-text: #0f172a;
-      --table-even: #f8fafc;
-      --table-odd: #ffffff;
-      --table-hover: #f1f5f9;
-      --subtext: #64748b;
-    }
+<style>
+  :root {
+    --cols: 8;
+    --rows: 15;
+    --slot: 52px;
+    --gap: 4px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #15120d;
+    color: #e9dcc0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  h1 { font-size: 22px; margin: 4px 0 14px; color: #f0c674; letter-spacing: 1px; text-align: center; }
+  h2 { font-size: 16px; color: #f0c674; margin: 0 0 8px; }
 
-    body.dark-mode {
-      --bg-gradient: linear-gradient(135deg, #0f051d 0%, #171b30 100%);
-      --card-bg: rgba(20, 20, 35, 0.92);
-      --card-border: #00f0ff;
-      --purple-accent: #a855f7;
-      --text-dark: #f1f5f9;
-      --text-intro: #cbd5e1;
-      --box-bg: #1e1e38;
-      --box-border: #334155;
-      --stat-bg: #111827;
-      --stat-border: #374151;
-      --stat-text: #f8fafc;
-      --table-even: #18182c;
-      --table-odd: #1e1e38;
-      --table-hover: #2a2a4a;
-      --subtext: #94a3b8;
-    }
+  .top-bar { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .clan-badge { font-size: 14px; color: #f0c674; font-weight: bold; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
+  /* Pestañas de navegación */
+  .tabs-nav {
+    display: flex; gap: 8px; margin-bottom: 14px; width: 100%; max-width: 900px; justify-content: center;
+  }
+  .tab-btn {
+    background: #241d14; border: 1px solid #5a4621; color: #e9dcc0; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;
+  }
+  .tab-btn.active {
+    background: linear-gradient(#c9a34a, #8c6a22); color: #1b1408; border-color: #f0c674;
+  }
 
-    body {
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-dark);
-      font-family: 'Rajdhani', sans-serif;
-      padding: 25px 15px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
+  .tab-content { display: none; width: 100%; flex-direction: column; align-items: center; }
+  .tab-content.active { display: flex; }
 
-    /* PANTALLA DE LOGIN */
-    #loginOverlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 5, 29, 0.95);
-      backdrop-filter: blur(15px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
+  .controls {
+    display: none; flex-wrap: wrap; gap: 10px; align-items: center;
+    justify-content: center; background: #241d14; border: 1px solid #5a4621;
+    padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; width: 100%; max-width: 900px;
+  }
+  .controls.active { display: flex; }
+  .controls label { font-size: 13px; }
+  .controls input[type="number"] {
+    width: 90px; padding: 6px; border-radius: 6px; border: 1px solid #7a5d2a;
+    background: #1b160f; color: #fff; font-size: 14px;
+  }
+  button {
+    padding: 7px 14px; border: none; border-radius: 6px; cursor: pointer;
+    background: linear-gradient(#c9a34a, #8c6a22); color: #1b1408; font-weight: bold;
+  }
+  button:hover { filter: brightness(1.1); }
+  button.secondary { background: linear-gradient(#5b5b5b, #333); color: #eee; }
+  button.danger { background: linear-gradient(#b5523b, #7a2e1d); color: #fff; }
+  button.admin-btn { background: #3a2a16; border: 1px solid #f0c674; color: #f0c674; font-size: 12px; padding: 5px 10px; }
+  button.delete-row { background: #b5523b; color: #fff; padding: 3px 8px; font-size: 11px; }
 
-    .login-card {
-      background: rgba(20, 20, 35, 0.95);
-      border: 3px solid var(--cyan-neon);
-      border-radius: 20px;
-      padding: 35px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-      text-align: center;
-    }
+  .status { font-size: 15px; margin-bottom: 8px; text-align: center; }
+  .status strong { color: #f0c674; }
+  .msg { min-height: 20px; font-size: 13px; color: #ff8a7a; margin-bottom: 8px; text-align: center; }
 
-    .login-title {
-      font-family: 'Orbitron', sans-serif;
-      color: #fff;
-      font-size: 22px;
-      font-weight: 900;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      text-shadow: 0 0 10px var(--pink-neon);
-    }
+  #capture {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 16px; background: #15120d; width: 100%;
+  }
+  .chest {
+    padding: 18px;
+    border-radius: 14px;
+    background: linear-gradient(#4a351b, #2a1d0e);
+    border: 3px solid #8c6a22;
+    box-shadow: 0 0 30px rgba(240,198,116,0.15), inset 0 0 25px rgba(0,0,0,0.6);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .chest-title { text-align: center; font-size: 15px; color: #f0c674; margin: 0 0 10px; letter-spacing: 1px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--slot));
+    grid-template-rows: repeat(var(--rows), var(--slot));
+    gap: var(--gap);
+    background: rgba(0,0,0,0.35);
+    padding: 8px;
+    border-radius: 8px;
+    width: max-content;
+    margin: 0 auto;
+  }
+  .slot {
+    width: var(--slot); height: var(--slot);
+    border: 1px solid #6b5426;
+    border-radius: 4px;
+    background: rgba(20,15,8,0.75);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .slot.empty { border-style: dashed; border-color: #4a3a1c; }
+  .slot img {
+    width: 92%; height: 92%; object-fit: contain;
+  }
 
-    .login-input {
-      width: 100%;
-      background: #111827;
-      border: 2px solid #334155;
-      border-radius: 12px;
-      color: #fff;
-      padding: 14px;
-      font-size: 16px;
-      font-family: 'Rajdhani', sans-serif;
-      margin-bottom: 15px;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
+  .log-box {
+    width: 100%; max-width: 900px; background: #241d14; border: 1px solid #5a4621;
+    border-radius: 10px; padding: 14px;
+  }
+  .table-wrap { max-height: 400px; overflow-y: auto; border: 1px solid #4a3a1c; border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #3a2e18; }
+  th { position: sticky; top: 0; background: #3a2a16; color: #f0c674; }
+  td.pos { color: #8fe38f; }
+  td.neg { color: #ff8a7a; }
+  .empty-log { text-align: center; opacity: .6; padding: 20px; }
 
-    .login-input:focus {
-      border-color: var(--cyan-neon);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-    }
+  .tip { font-size: 12px; opacity: .7; margin-top: 16px; text-align: center; }
 
-    .login-btn {
-      width: 100%;
-      background: linear-gradient(90deg, var(--pink-neon), #ff5252);
-      color: #fff;
-      border: 2px solid var(--yellow-neon);
-      padding: 12px;
-      border-radius: 12px;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+  /* Ruleta Modal */
+  .modal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 100;
+  }
+  .modal.active { display: flex; }
+  .modal-content {
+    background: #241d14; border: 2px solid #f0c674; padding: 20px; border-radius: 12px;
+    width: 90%; max-width: 450px; text-align: center;
+  }
+  .modal-content textarea {
+    width: 100%; height: 100px; background: #15120d; color: #fff; border: 1px solid #5a4621; border-radius: 6px; padding: 8px; margin-bottom: 10px; resize: none;
+  }
+  .wheel-container { position: relative; width: 260px; height: 260px; margin: 15px auto; }
+  canvas#wheelCanvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #f0c674; background: #15120d; }
+  .pointer {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid #ffcc00; z-index: 10;
+  }
+</style>
+</head>
+<body>
 
-    .login-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 25px var(--pink-neon);
-    }
+<div class="top-bar">
+  <div class="clan-badge">🛡️ Clan CRITICAL - Baúl Oficial</div>
+  <button id="adminToggleBtn" class="admin-btn">🔒 Modo Admin</button>
+</div>
 
-    .login-error {
-      color: #ff4d4d;
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 10px;
-      display: none;
-    }
+<h1>BAUL DEL CLAN CRITICAL</h1>
 
-    .main-container {
-      width: 100%;
-      max-width: 900px;
-      display: none; /* Oculto hasta iniciar sesión */
-    }
+<!-- PANEL DE ADMINISTRADOR (Oculto para el clan) -->
+<div class="controls" id="adminControls">
+  <label>Cantidad: <input type="number" id="amount" min="1" max="120" value="1"></label>
+  <button id="addBtn">Agregar cajas</button>
+  <button id="removeBtn" class="secondary">Quitar cajas</button>
+  <button id="clearBtn" class="danger">Vaciar baúl</button>
+  <button id="rouletteOpenBtn" style="background:linear-gradient(#4a1d4a, #2a0e2a); color:#ffccff;">🎡 Ruleta de Sorteo</button>
+</div>
 
-    /* ENCABEZADO ANIME */
-    .lib-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+<!-- PESTAÑAS DE NAVEGACIÓN -->
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('baulTab', this)">📦 Baúl en Vivo</button>
+  <button class="tab-btn" onclick="switchTab('logTab', this)">📋 Historial y Auditoría</button>
+</div>
 
-    .lib-title {
-      font-family: 'Orbitron', sans-serif;
-      color: #fff;
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-shadow: 
-        0 0 10px var(--pink-neon),
-        0 0 20px var(--pink-neon),
-        0 0 40px var(--cyan-neon);
-      margin-bottom: 20px;
-    }
+<div class="status">Cajas en el baúl: <strong id="count">0</strong> / <strong id="max">120</strong></div>
+<div class="msg" id="msg"></div>
 
-    /* NAVEGACIÓN PRINCIPAL */
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
+<!-- CONTENIDO PESTAÑA BAÚL -->
+<div id="baulTab" class="tab-content active">
+  <div id="capture">
+    <div class="chest">
+      <div class="chest-title">BAÚL DE KUNDUN · Inventario en Vivo</div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</div>
 
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 50px;
-      border: 2px solid #fff;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+<!-- CONTENIDO PESTAÑA HISTORIAL -->
+<div id="logTab" class="tab-content">
+  <div class="log-box">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h2>Registro de movimientos y auditoría</h2>
+      <button id="clearLogBtn" class="danger admin-only" style="display:none; font-size:11px; padding:4px 8px;">Vaciar Historial</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Acción</th>
+            <th>Cambio</th>
+            <th>Total</th>
+            <th class="admin-col" style="display:none; text-align:center;">Acción Admin</th>
+          </tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+      <div class="empty-log" id="emptyLog">Sin movimientos todavía.</div>
+    </div>
+  </div>
+</div>
 
-    .nav-btn:hover {
-      background: var(--cyan-neon);
-      color: #000;
-      border-color: #fff;
-      box-shadow: 0 0 20px var(--cyan-neon);
-      transform: translateY(-3px) scale(1.05);
-    }
+<div class="tip">Sistema sincronizado en tiempo real para el Clan CRITICAL.</div>
 
-    .nav-btn.active {
-      background: linear-gradient(90deg, var(--pink-neon), #ff5252);
-      color: #fff;
-      border-color: var(--yellow-neon);
-      box-shadow: 0 0 25px var(--pink-neon);
-      transform: scale(1.05);
-    }
+<!-- MODAL RULETA -->
+<div class="modal" id="rouletteModal">
+  <div class="modal-content">
+    <h2>Ruleta de Sorteo</h2>
+    <p style="font-size:12px; opacity:0.8; margin-top:0;">Participantes (uno por línea):</p>
+    <textarea id="participantsInput" placeholder="Juan\nPedro\nCarlos"></textarea>
+    <div class="wheel-container">
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="300" height="300"></canvas>
+    </div>
+    <button id="spinBtn" style="margin-top:10px;">Girar Ruleta</button>
+    <button id="closeModalBtn" class="secondary" style="margin-top:10px;">Cerrar</button>
+  </div>
+</div>
 
-    .theme-toggle-btn {
-      background: rgba(0, 0, 0, 0.4);
-      border-color: var(--yellow-neon);
-    }
-    .theme-toggle-btn:hover {
-      background: var(--yellow-neon);
-      color: #000;
-      box-shadow: 0 0 20px var(--yellow-neon);
-    }
+<script>
+  // ==========================================
+  // DATOS DE FIREBASE:
+  // ==========================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyDE6dB4TdocEoeyYukrNgXeAKbU6iZZHxg",
+    authDomain: "baul-critical.firebaseapp.com",
+    databaseURL: "https://baul-critical-default-rtdb.firebaseio.com",
+    projectId: "baul-critical",
+    storageBucket: "baul-critical.firebasestorage.app",
+    messagingSenderId: "235744969945",
+    appId: "1:235744969945:web:658ca51a6dcbc0f867aac8",
+    measurementId: "G-SB5MJZX09C"
+  };
 
-    .logout-btn {
-      background: rgba(225, 29, 72, 0.4);
-      border-color: #e11d48;
-    }
-    .logout-btn:hover {
-      background: #e11d48;
-      color: #fff;
-      box-shadow: 0 0 20px #e11d48;
-    }
+  // Inicializar Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-    /* CONTENEDOR DE SECCIONES */
-    section {
-      display: none;
-      background: var(--card-bg);
-      border: 3px solid var(--card-border);
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
-      backdrop-filter: blur(12px);
-      animation: animePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
+  const TOTAL = 120;
+  const DEFAULT_BOX = 'box.png.webp'; // Archivo de imagen limpio
 
-    section.active-section {
-      display: block;
-    }
+  const grid = document.getElementById('grid');
+  const msg = document.getElementById('msg');
+  const countEl = document.getElementById('count');
+  const amountInput = document.getElementById('amount');
+  const logBody = document.getElementById('logBody');
+  const emptyLog = document.getElementById('emptyLog');
+  const adminControls = document.getElementById('adminControls');
+  const adminToggleBtn = document.getElementById('adminToggleBtn');
 
-    @keyframes animePop {
-      from { opacity: 0; transform: scale(0.95) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
+  document.getElementById('max').textContent = TOTAL;
+  amountInput.max = TOTAL;
 
-    .section-title {
-      font-family: 'Orbitron', sans-serif;
-      color: var(--purple-accent);
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
+  // Crear las 120 casillas
+  for (let i = 0; i < TOTAL; i++) {
+    const div = document.createElement('div');
+    div.className = 'slot empty';
+    grid.appendChild(div);
+  }
 
-    .section-intro {
-      color: var(--text-intro);
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-bottom: 20px;
-      border-bottom: 2px dashed rgba(107, 17, 255, 0.2);
-      padding-bottom: 12px;
-    }
+  let state = { count: 0, log: [] };
+  let isAdmin = false;
 
-    /* TARJETAS DE EVENTOS TIEMPO REAL */
-    .events-grid-live {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
+  // Escuchar cambios en tiempo real desde Firebase
+  db.ref('baul').on('value', snapshot => {
+    const data = snapshot.val();
+    if (data) {
+      state = data;
+      if (!state.log) state.log = [];
+      render();
     }
+  });
 
-    .live-card {
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
+  function saveData() {
+    db.ref('baul').set(state);
+  }
 
-    .live-card-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
+  function nowStr() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
 
-    .live-card-timer {
-      font-size: 22px;
-      font-weight: 900;
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+  }
 
-    /* ESTADOS Y ANIMACIÓN DE DESTELLO EN BORDES */
-    .live-card.status-normal {
-      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-      border: 2px solid #0284c7;
-      color: #0369a1;
-    }
-    body.dark-mode .live-card.status-normal {
-      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
-      border: 2px solid #38bdf8;
-      color: #e0f2fe;
-    }
-
-    .live-card.status-warning {
-      background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
-      border: 2px solid #ca8a04;
-      color: #854d0e;
-      animation: borderFlashWarning 1.2s infinite alternate ease-in-out;
-    }
-    body.dark-mode .live-card.status-warning {
-      background: linear-gradient(135deg, #713f12 0%, #a16207 100%);
-      border: 2px solid #facc15;
-      color: #fef9c3;
-    }
-
-    @keyframes borderFlashWarning {
-      0% {
-        border-color: #ca8a04;
-        box-shadow: 0 0 4px rgba(202, 138, 4, 0.3);
-      }
-      100% {
-        border-color: #facc15;
-        box-shadow: 0 0 18px #facc15, inset 0 0 8px rgba(250, 204, 21, 0.4);
+  function render() {
+    const slotEls = grid.children;
+    for (let i = 0; i < TOTAL; i++) {
+      const el = slotEls[i];
+      if (i < state.count) {
+        if (!el.querySelector('img')) {
+          el.className = 'slot';
+          el.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = DEFAULT_BOX;
+          el.appendChild(img);
+        }
+      } else {
+        el.className = 'slot empty';
+        el.innerHTML = '';
       }
     }
+    countEl.textContent = state.count;
+    renderLog();
+  }
 
-    .live-card.status-danger {
-      background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
-      border: 2px solid #e11d48;
-      color: #9f1239;
-      animation: borderFlashDanger 0.8s infinite alternate ease-in-out;
-    }
-    body.dark-mode .live-card.status-danger {
-      background: linear-gradient(135deg, #881337 0%, #be123c 100%);
-      border: 2px solid #ff007f;
-      color: #ffe4e6;
-    }
-
-    @keyframes borderFlashDanger {
-      0% {
-        border-color: #e11d48;
-        box-shadow: 0 0 6px rgba(225, 29, 72, 0.4);
+  function renderLog() {
+    logBody.innerHTML = '';
+    emptyLog.style.display = state.log.length ? 'none' : 'block';
+    
+    [...state.log].reverse().forEach((entry, originalIndex) => {
+      const realIndex = state.log.length - 1 - originalIndex;
+      const tr = document.createElement('tr');
+      const sign = entry.delta > 0 ? '+' : '';
+      
+      let adminColHtml = '';
+      if (isAdmin) {
+        adminColHtml = `<td style="text-align:center;"><button class="delete-row" onclick="deleteLogEntry(${realIndex})">🗑️ Borrar</button></td>`;
       }
-      100% {
-        border-color: #ff007f;
-        box-shadow: 0 0 22px #ff007f, inset 0 0 10px rgba(255, 0, 127, 0.5);
+
+      tr.innerHTML =
+        `<td>${entry.date}</td>` +
+        `<td>${entry.action}</td>` +
+        `<td class="${entry.delta >= 0 ? 'pos' : 'neg'}">${sign}${entry.delta}</td>` +
+        `<td>${entry.total}</td>` +
+        (isAdmin ? adminColHtml : '');
+      logBody.appendChild(tr);
+    });
+
+    document.querySelectorAll('.admin-col').forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
+    document.getElementById('clearLogBtn').style.display = isAdmin && state.log.length > 0 ? 'inline-block' : 'none';
+  }
+
+  function deleteLogEntry(index) {
+    if (!confirm('¿Estás seguro de borrar este registro del historial?')) return;
+    state.log.splice(index, 1);
+    saveData();
+  }
+
+  document.getElementById('clearLogBtn').addEventListener('click', () => {
+    if (!confirm('¿Vaciar todo el historial de movimientos?')) return;
+    state.log = [];
+    saveData();
+  });
+
+  function showMsg(text) {
+    msg.textContent = text;
+    clearTimeout(showMsg.t);
+    showMsg.t = setTimeout(() => msg.textContent = '', 3500);
+  }
+
+  function record(action, delta) {
+    state.log.push({ date: nowStr(), action, delta, total: state.count });
+    saveData();
+  }
+
+  function getAmount() {
+    const n = parseInt(amountInput.value, 10);
+    if (isNaN(n) || n < 1) { showMsg('Ingresa una cantidad válida.'); return null; }
+    return n;
+  }
+
+  // Botón de Admin
+  adminToggleBtn.addEventListener('click', () => {
+    if (!isAdmin) {
+      const pass = prompt('Ingresa la contraseña de administrador:');
+      if (pass === 'critical95') {
+        isAdmin = true;
+        adminControls.classList.add('active');
+        adminToggleBtn.textContent = '🔓 Ocultar Admin';
+        renderLog();
+      } else if (pass !== null) {
+        alert('Contraseña incorrecta.');
+      }
+    } else {
+      isAdmin = false;
+      adminControls.classList.remove('active');
+      adminToggleBtn.textContent = '🔒 Modo Admin';
+      renderLog();
+    }
+  });
+
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const n = getAmount();
+    if (n === null) return;
+    const free = TOTAL - state.count;
+    if (free === 0) { showMsg('El baúl está lleno.'); return; }
+    const added = Math.min(n, free);
+    state.count += added;
+    record('Agregar cajas', added);
+  });
+
+  document.getElementById('removeBtn').addEventListener('click', () => {
+    const n = getAmount();
+    if (n === null) return;
+    if (state.count === 0) { showMsg('El baúl ya está vacío.'); return; }
+    const removed = Math.min(n, state.count);
+    state.count -= removed;
+    record('Quitar cajas', -removed);
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (state.count === 0) { showMsg('El baúl ya está vacío.'); return; }
+    if (!confirm('¿Vaciar todo el baúl?')) return;
+    const removed = state.count;
+    state.count = 0;
+    record('Vaciar baúl', -removed);
+  });
+
+  // Lógica de la Ruleta
+  const modal = document.getElementById('rouletteModal');
+  document.getElementById('rouletteOpenBtn').addEventListener('click', () => modal.classList.add('active'));
+  document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.remove('active'));
+
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  let startAngle = 0;
+  let arc = 0;
+  let spinTimeout = null;
+  let spinAngleStart = 0;
+  let spinTime = 0;
+  let spinTimeTotal = 0;
+
+  function drawWheel() {
+    const participants = document.getElementById('participantsInput').value.split('\n').map(p => p.trim()).filter(p => p);
+    if (participants.length === 0) {
+      ctx.clearRect(0,0,300,300);
+      ctx.fillStyle = "#e9dcc0";
+      ctx.font = "14px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Ingresa participantes", 150, 150);
+      return;
+    }
+    arc = Math.PI / (participants.length / 2);
+    let colors = ['#8c6a22', '#c9a34a', '#5a4621', '#4a351b', '#3a2a16'];
+
+    ctx.clearRect(0,0,300,300);
+    for (let i = 0; i < participants.length; i++) {
+      let angle = startAngle + i * arc;
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.beginPath();
+      ctx.arc(150, 150, 140, angle, angle + arc, false);
+      ctx.arc(150, 150, 0, angle + arc, angle, true);
+      ctx.fill();
+      ctx.save();
+
+      ctx.fillStyle = "#1b1408";
+      ctx.font = "bold 12px Arial";
+      ctx.translate(150 + Math.cos(angle + arc / 2) * 90, 150 + Math.sin(angle + arc / 2) * 90);
+      ctx.rotate(angle + arc / 2 + Math.PI / 2);
+      ctx.fillText(participants[i], -ctx.measureText(participants[i]).width / 2, 0);
+      ctx.restore();
+    }
+  }
+
+  document.getElementById('participantsInput').addEventListener('input', drawWheel);
+
+  function spin() {
+    spinAngleStart = Math.random() * 10 + 10;
+    spinTime = 0;
+    spinTimeTotal = Math.random() * 3000 + 4000;
+    rotateWheel();
+  }
+
+  function rotateWheel() {
+    spinTime += 30;
+    if (spinTime >= spinTimeTotal) {
+      stopRotateWheel();
+      return;
+    }
+    let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+    startAngle += (spinAngle * Math.PI / 180);
+    drawWheel();
+    spinTimeout = setTimeout(rotateWheel, 30);
+  }
+
+  function stopRotateWheel() {
+    let degrees = startAngle * 180 / Math.PI + 90;
+    let arcd = arc * 180 / Math.PI;
+    let participants = document.getElementById('participantsInput').value.split('\n').map(p => p.trim()).filter(p => p);
+    let index = Math.floor((360 - (degrees % 360)) / arcd);
+    let winner = participants[index];
+    
+    alert(`🎉 ¡Ganador del sorteo: ${winner}!`);
+    
+    let boxesToGive = prompt(`¿Cuántas cajas se le van a entregar a ${winner}?`, "10");
+    let numBoxes = parseInt(boxesToGive, 10);
+    if (!isNaN(numBoxes) && numBoxes > 0) {
+      if (state.count >= numBoxes) {
+        state.count -= numBoxes;
+        record(`Premio Ruleta (${winner})`, -numBoxes);
+      } else {
+        alert('No hay suficientes cajas en el baúl para entregar el premio.');
       }
     }
+    modal.classList.remove('active');
+  }
 
-    /* TAB CALCULADORA */
-    .mu-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      background: rgba(107, 17, 255, 0.1);
-      padding: 6px;
-      border-radius: 14px;
-    }
+  function easeOut(t, b, c, d) {
+    let ts = (t /= d) * t;
+    let tc = ts * t;
+    return b + c * (tc + (-3 * ts + 3 * t));
+  }
 
-    .mu-tab {
-      flex: 1;
-      background: transparent;
-      border: none;
-      border-radius: 10px;
-      color: var(--purple-accent);
-      padding: 10px 0;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .mu-tab.active {
-      background: var(--purple-accent);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(107, 17, 255, 0.4);
-    }
-
-    .mu-top-bar {
-      display: grid;
-      grid-template-columns: 1.4fr 0.9fr 1.1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    @media (max-width: 650px) {
-      .mu-top-bar {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .mu-reset-box, .mu-points-box, .mu-select-account {
-      background: var(--box-bg);
-      border: 2px solid #3b82f6;
-      border-radius: 12px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--text-dark);
-      font-weight: 700;
-      font-size: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .reset-label { 
-      color: #2563eb; 
-      font-weight: 800; 
-      font-family: 'Orbitron';
-      white-space: nowrap;
-    }
-    body.dark-mode .reset-label {
-      color: #60a5fa;
-    }
-
-    .reset-controls-group { 
-      display: flex; 
-      align-items: center; 
-      gap: 4px; 
-    }
-
-    .btn-reset-single {
-      background: #2563eb;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: transform 0.1s ease;
-    }
-
-    .btn-reset-single:active { transform: scale(0.9); }
-
-    .mu-input-reset {
-      width: 65px;
-      background: transparent;
-      border: none;
-      color: #1d4ed8;
-      font-weight: 900;
-      font-size: 18px;
-      text-align: center;
-      outline: none;
-      font-family: 'Orbitron';
-      -moz-appearance: textfield;
-    }
-    body.dark-mode .mu-input-reset {
-      color: #93c5fd;
-    }
-
-    .mu-input-reset::-webkit-outer-spin-button,
-    .mu-input-reset::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    .mu-select-account {
-      cursor: pointer;
-      font-weight: 800;
-      outline: none;
-      color: #9333ea;
-      border-color: #a855f7;
-    }
-    body.dark-mode .mu-select-account {
-      color: #c084fc;
-      background-color: var(--box-bg);
-    }
-
-    .points-label { color: var(--subtext); font-family: 'Orbitron'; font-size: 13px; }
-    .points-value { color: var(--pink-neon); font-weight: 900; font-size: 18px; font-family: 'Orbitron'; }
-
-    .mu-select {
-      width: 100%;
-      background: var(--box-bg);
-      border: 2px solid var(--purple-accent);
-      border-radius: 12px;
-      color: var(--text-dark);
-      padding: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      outline: none;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    /* BARRAS DE STATS */
-    .stat-block {
-      margin-bottom: 16px;
-      background: var(--box-bg);
-      border: 2px solid var(--box-border);
-      border-radius: 16px;
-      padding: 12px 14px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .stat-input-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .mu-stat-box {
-      flex: 1;
-      background: var(--stat-bg);
-      border: 2px solid var(--stat-border);
-      border-radius: 30px;
-      padding: 0 18px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 44px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .stat-progress-bg {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1;
-      border-radius: 30px;
-      box-shadow: 0 0 12px rgba(255, 0, 127, 0.4);
-    }
-
-    .stat-progress-bg::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-      border-radius: 30px;
-      animation: shineBar 2s infinite linear;
-    }
-
-    @keyframes shineBar {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .mu-stat-name { 
-      font-size: 15px; 
-      font-weight: 800; 
-      z-index: 2; 
-      color: var(--stat-text); 
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-
-    .mu-stat-value { 
-      font-size: 18px; 
-      font-weight: 900; 
-      z-index: 2; 
-      color: var(--stat-text);
+  document.getElementById('spinBtn').addEventListener('click', spin);
+  drawWheel();
+</script>
+</body>
+</html>
