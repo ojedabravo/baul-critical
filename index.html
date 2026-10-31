@@ -1,0 +1,1170 @@
+<html lang="es"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca &amp; Guía ARGMU 99B - Anime Edition</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: #6b11ff;
+      --pink-neon: #ff007f;
+      --cyan-neon: #00f0ff;
+      --yellow-neon: #ffea00;
+      --purple-accent: #6b11ff;
+      --text-dark: #1e1035;
+      --text-intro: #4a4a6a;
+      --box-bg: #ffffff;
+      --box-border: #e2e8f0;
+      --stat-bg: #f1f5f9;
+      --stat-border: #cbd5e1;
+      --stat-text: #0f172a;
+      --table-even: #f8fafc;
+      --table-odd: #ffffff;
+      --table-hover: #f1f5f9;
+      --subtext: #64748b;
+    }
+
+    body.dark-mode {
+      --bg-gradient: linear-gradient(135deg, #0f051d 0%, #171b30 100%);
+      --card-bg: rgba(20, 20, 35, 0.92);
+      --card-border: #00f0ff;
+      --purple-accent: #a855f7;
+      --text-dark: #f1f5f9;
+      --text-intro: #cbd5e1;
+      --box-bg: #1e1e38;
+      --box-border: #334155;
+      --stat-bg: #111827;
+      --stat-border: #374151;
+      --stat-text: #f8fafc;
+      --table-even: #18182c;
+      --table-odd: #1e1e38;
+      --table-hover: #2a2a4a;
+      --subtext: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-dark);
+      font-family: 'Rajdhani', sans-serif;
+      padding: 25px 15px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* ENCABEZADO ANIME */
+    .lib-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .lib-title {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 
+        0 0 10px var(--pink-neon),
+        0 0 20px var(--pink-neon),
+        0 0 40px var(--cyan-neon);
+      margin-bottom: 20px;
+    }
+
+    /* NAVEGACIÓN PRINCIPAL */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      border: 2px solid #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .nav-btn:hover {
+      background: var(--cyan-neon);
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 0 20px var(--cyan-neon);
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(90deg, var(--pink-neon), #ff5252);
+      color: #fff;
+      border-color: var(--yellow-neon);
+      box-shadow: 0 0 25px var(--pink-neon);
+      transform: scale(1.05);
+    }
+
+    .theme-toggle-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: var(--yellow-neon);
+    }
+    .theme-toggle-btn:hover {
+      background: var(--yellow-neon);
+      color: #000;
+      box-shadow: 0 0 20px var(--yellow-neon);
+    }
+
+    /* CONTENEDOR DE SECCIONES */
+    section {
+      display: none;
+      background: var(--card-bg);
+      border: 3px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
+      backdrop-filter: blur(12px);
+      animation: animePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    section.active-section {
+      display: block;
+    }
+
+    @keyframes animePop {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--purple-accent);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .section-intro {
+      color: var(--text-intro);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      border-bottom: 2px dashed rgba(107, 17, 255, 0.2);
+      padding-bottom: 12px;
+    }
+
+    /* TARJETAS DE EVENTOS TIEMPO REAL */
+    .events-grid-live {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .live-card {
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .live-card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .live-card-timer {
+      font-size: 22px;
+      font-weight: 900;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* ESTADOS Y ANIMACIÓN DE DESTELLO EN BORDES */
+    .live-card.status-normal {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+      border: 2px solid #0284c7;
+      color: #0369a1;
+    }
+    body.dark-mode .live-card.status-normal {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+      border: 2px solid #38bdf8;
+      color: #e0f2fe;
+    }
+
+    .live-card.status-warning {
+      background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+      border: 2px solid #ca8a04;
+      color: #854d0e;
+      animation: borderFlashWarning 1.2s infinite alternate ease-in-out;
+    }
+    body.dark-mode .live-card.status-warning {
+      background: linear-gradient(135deg, #713f12 0%, #a16207 100%);
+      border: 2px solid #facc15;
+      color: #fef9c3;
+    }
+
+    @keyframes borderFlashWarning {
+      0% {
+        border-color: #ca8a04;
+        box-shadow: 0 0 4px rgba(202, 138, 4, 0.3);
+      }
+      100% {
+        border-color: #facc15;
+        box-shadow: 0 0 18px #facc15, inset 0 0 8px rgba(250, 204, 21, 0.4);
+      }
+    }
+
+    .live-card.status-danger {
+      background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+      border: 2px solid #e11d48;
+      color: #9f1239;
+      animation: borderFlashDanger 0.8s infinite alternate ease-in-out;
+    }
+    body.dark-mode .live-card.status-danger {
+      background: linear-gradient(135deg, #881337 0%, #be123c 100%);
+      border: 2px solid #ff007f;
+      color: #ffe4e6;
+    }
+
+    @keyframes borderFlashDanger {
+      0% {
+        border-color: #e11d48;
+        box-shadow: 0 0 6px rgba(225, 29, 72, 0.4);
+      }
+      100% {
+        border-color: #ff007f;
+        box-shadow: 0 0 22px #ff007f, inset 0 0 10px rgba(255, 0, 127, 0.5);
+      }
+    }
+
+    /* TAB CALCULADORA */
+    .mu-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: rgba(107, 17, 255, 0.1);
+      padding: 6px;
+      border-radius: 14px;
+    }
+
+    .mu-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--purple-accent);
+      padding: 10px 0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .mu-tab.active {
+      background: var(--purple-accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(107, 17, 255, 0.4);
+    }
+
+    .mu-top-bar {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 1.1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .mu-top-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mu-reset-box, .mu-points-box, .mu-select-account {
+      background: var(--box-bg);
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-dark);
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .reset-label { 
+      color: #2563eb; 
+      font-weight: 800; 
+      font-family: 'Orbitron';
+      white-space: nowrap;
+    }
+    body.dark-mode .reset-label {
+      color: #60a5fa;
+    }
+
+    .reset-controls-group { 
+      display: flex; 
+      align-items: center; 
+      gap: 4px; 
+    }
+
+    .btn-reset-single {
+      background: #2563eb;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.1s ease;
+    }
+
+    .btn-reset-single:active { transform: scale(0.9); }
+
+    .mu-input-reset {
+      width: 65px;
+      background: transparent;
+      border: none;
+      color: #1d4ed8;
+      font-weight: 900;
+      font-size: 18px;
+      text-align: center;
+      outline: none;
+      font-family: 'Orbitron';
+      -moz-appearance: textfield;
+    }
+    body.dark-mode .mu-input-reset {
+      color: #93c5fd;
+    }
+
+    .mu-input-reset::-webkit-outer-spin-button,
+    .mu-input-reset::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .mu-select-account {
+      cursor: pointer;
+      font-weight: 800;
+      outline: none;
+      color: #9333ea;
+      border-color: #a855f7;
+    }
+    body.dark-mode .mu-select-account {
+      color: #c084fc;
+      background-color: var(--box-bg);
+    }
+
+    .points-label { color: var(--subtext); font-family: 'Orbitron'; font-size: 13px; }
+    .points-value { color: var(--pink-neon); font-weight: 900; font-size: 18px; font-family: 'Orbitron'; }
+
+    .mu-select {
+      width: 100%;
+      background: var(--box-bg);
+      border: 2px solid var(--purple-accent);
+      border-radius: 12px;
+      color: var(--text-dark);
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    /* BARRAS DE STATS */
+    .stat-block {
+      margin-bottom: 16px;
+      background: var(--box-bg);
+      border: 2px solid var(--box-border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-input-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mu-stat-box {
+      flex: 1;
+      background: var(--stat-bg);
+      border: 2px solid var(--stat-border);
+      border-radius: 30px;
+      padding: 0 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 44px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .stat-progress-bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+      border-radius: 30px;
+      box-shadow: 0 0 12px rgba(255, 0, 127, 0.4);
+    }
+
+    .stat-progress-bg::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+      border-radius: 30px;
+      animation: shineBar 2s infinite linear;
+    }
+
+    @keyframes shineBar {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .mu-stat-name { 
+      font-size: 15px; 
+      font-weight: 800; 
+      z-index: 2; 
+      color: var(--stat-text); 
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .mu-stat-value { 
+      font-size: 18px; 
+      font-weight: 900; 
+      z-index: 2; 
+      color: var(--stat-text); 
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .mu-stat-value.maxed { 
+      color: #d97706; 
+      text-shadow: 0 0 8px #fde047;
+    }
+
+    .btn-mu-add {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+      border: 2px solid #fff;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 900;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 0, 127, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-mu-add:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 0 18px var(--pink-neon);
+    }
+
+    .stat-subtext-bar {
+      color: var(--subtext);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 8px;
+      padding: 0 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .add-val { color: #16a34a; font-weight: 900; }
+    body.dark-mode .add-val { color: #4ade80; }
+
+    /* TABLAS ESTILIZADAS COLORIDAS */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 15px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid var(--box-border);
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    th {
+      background: var(--purple-accent);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) td { background-color: var(--table-even); }
+    tr:nth-child(odd) td { background-color: var(--table-odd); }
+
+    tr:hover td { background-color: var(--table-hover); }
+
+    .hours-cell {
+      font-family: monospace;
+      color: var(--subtext);
+      font-weight: 700;
+    }
+
+    .next-time-highlight {
+      color: #2563eb;
+      font-weight: 900;
+      font-size: 16px;
+      font-family: 'Orbitron';
+    }
+    body.dark-mode .next-time-highlight {
+      color: #38bdf8;
+    }
+
+    tr.vip-row td {
+      color: #b45309;
+      font-weight: 800;
+      background-color: #fef3c7 !important;
+    }
+    body.dark-mode tr.vip-row td {
+      color: #fde047;
+      background-color: #713f12 !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+
+  <div class="lib-header">
+    <h1 class="lib-title">✨ Biblioteca ARGMU 99B ✨</h1>
+    
+    <nav>
+      <button class="nav-btn active" onclick="switchSection('calculadora', this)">Calculadora</button>
+      <button class="nav-btn" onclick="switchSection('eventos', this)">Horarios Eventos</button>
+      <button class="nav-btn" onclick="switchSection('bc', this)">Blood Castle</button>
+      <button class="nav-btn theme-toggle-btn" onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
+    </nav>
+  </div>
+
+  <!-- SECCIÓN 1: CALCULADORA DE STATS -->
+  <section id="calculadora" class="active-section">
+    <div class="section-title">⚡ Calculadora de Stats</div>
+    <p class="section-intro">
+      Configurá tus resets y copiá los comandos de auto-add con el botón "+".
+    </p>
+
+    <div class="mu-tabs">
+      <button class="mu-tab" data-class="BK" onclick="selectClass('BK')">BK</button>
+      <button class="mu-tab active" data-class="SM" onclick="selectClass('SM')">SM</button>
+      <button class="mu-tab" data-class="ELF" onclick="selectClass('ELF')">ELF</button>
+      <button class="mu-tab" data-class="MG" onclick="selectClass('MG')">MG</button>
+      <button class="mu-tab" data-class="DL" onclick="selectClass('DL')">DL</button>
+    </div>
+
+    <div class="mu-top-bar">
+      <div class="mu-reset-box">
+        <span class="reset-label">Resets:</span>
+        <div class="reset-controls-group">
+          <button class="btn-reset-single" onclick="addResets(-1)">-</button>
+          <input type="number" id="resetInput" class="mu-input-reset" value="0" min="0" oninput="updateCalculations()">
+          <button class="btn-reset-single" onclick="addResets(1)">+</button>
+        </div>
+      </div>
+      <select id="accountTypeSelect" class="mu-select-account" onchange="updateCalculations()">
+        <option value="300">NORMAL</option>
+        <option value="420" selected="">VIP</option>
+      </select>
+      <div class="mu-points-box">
+        <span class="points-label">Puntos:</span>
+        <span id="totalPointsDisplay" class="points-value">0</span>
+      </div>
+    </div>
+
+    <select id="presetSelect" class="mu-select" onchange="applyPreset()"><option value="pvm">Leveo / Farm (PvM)</option><option value="support">Mana Shield Tank</option></select>
+
+    <div id="statsList"><div class="stat-block">
+                <div class="stat-input-container">
+                    <div class="mu-stat-box">
+                        <div class="stat-progress-bg" style="width: 0.05496183206106871%; background: linear-gradient(90deg, #0070f3 0%, #00dfd8 100%);"></div>
+                        <span class="mu-stat-name">Fuerza</span>
+                        <span class="mu-stat-value ">18</span>
+                    </div>
+                    <div class="btn-mu-add" title="Copiar /addstr 0" onclick="copySingleCommand('/addstr 0')">+</div>
+                </div>
+                <div class="stat-subtext-bar">
+                    <span>Base: 18</span>
+                    <span>Agregar: <span class="add-val">+0</span></span>
+                </div>
+            </div><div class="stat-block">
+                <div class="stat-input-container">
+                    <div class="mu-stat-box">
+                        <div class="stat-progress-bg" style="width: 0.05496183206106871%; background: linear-gradient(90deg, #0070f3 0%, #00dfd8 100%);"></div>
+                        <span class="mu-stat-name">Agilidad</span>
+                        <span class="mu-stat-value ">18</span>
+                    </div>
+                    <div class="btn-mu-add" title="Copiar /addagi 0" onclick="copySingleCommand('/addagi 0')">+</div>
+                </div>
+                <div class="stat-subtext-bar">
+                    <span>Base: 18</span>
+                    <span>Agregar: <span class="add-val">+0</span></span>
+                </div>
+            </div><div class="stat-block">
+                <div class="stat-input-container">
+                    <div class="mu-stat-box">
+                        <div class="stat-progress-bg" style="width: 0.04580152671755725%; background: linear-gradient(90deg, #0070f3 0%, #00dfd8 100%);"></div>
+                        <span class="mu-stat-name">Vitalidad</span>
+                        <span class="mu-stat-value ">15</span>
+                    </div>
+                    <div class="btn-mu-add" title="Copiar /addvit 0" onclick="copySingleCommand('/addvit 0')">+</div>
+                </div>
+                <div class="stat-subtext-bar">
+                    <span>Base: 15</span>
+                    <span>Agregar: <span class="add-val">+0</span></span>
+                </div>
+            </div><div class="stat-block">
+                <div class="stat-input-container">
+                    <div class="mu-stat-box">
+                        <div class="stat-progress-bg" style="width: 0.0916030534351145%; background: linear-gradient(90deg, #0070f3 0%, #00dfd8 100%);"></div>
+                        <span class="mu-stat-name">Energía</span>
+                        <span class="mu-stat-value ">30</span>
+                    </div>
+                    <div class="btn-mu-add" title="Copiar /addene 0" onclick="copySingleCommand('/addene 0')">+</div>
+                </div>
+                <div class="stat-subtext-bar">
+                    <span>Base: 30</span>
+                    <span>Agregar: <span class="add-val">+0</span></span>
+                </div>
+            </div></div>
+  </section>
+
+  <!-- SECCIÓN 2: HORARIOS DE EVENTOS -->
+  <section id="eventos">
+    <div class="section-title">⏰ Horarios de Eventos</div>
+    <p class="section-intro">
+      Cronograma en vivo con cuenta regresiva.
+    </p>
+
+    <div class="events-grid-live" id="liveEventsGrid"><div class="live-card status-normal">
+            <div class="live-card-title">Blood Castle</div>
+            <div class="live-card-timer">02:30 hs <span style="font-size: 13px; font-weight: normal;">(81m 14s)</span></div>
+          </div><div class="live-card status-danger">
+            <div class="live-card-title">Devil Square</div>
+            <div class="live-card-timer">01:30 hs <span style="font-size: 13px; font-weight: normal;">(21m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Chaos Castle</div>
+            <div class="live-card-timer">04:35 hs <span style="font-size: 13px; font-weight: normal;">(206m 14s)</span></div>
+          </div><div class="live-card status-warning">
+            <div class="live-card-title">Invasión Dragones Dorados</div>
+            <div class="live-card-timer">02:00 hs <span style="font-size: 13px; font-weight: normal;">(51m 14s)</span></div>
+          </div><div class="live-card status-warning">
+            <div class="live-card-title">Invasión Dragones Rojos</div>
+            <div class="live-card-timer">01:50 hs <span style="font-size: 13px; font-weight: normal;">(41m 14s)</span></div>
+          </div><div class="live-card status-warning">
+            <div class="live-card-title">Invasión Skeleton King</div>
+            <div class="live-card-timer">02:05 hs <span style="font-size: 13px; font-weight: normal;">(56m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Invasión Mago Blanco</div>
+            <div class="live-card-timer">02:45 hs <span style="font-size: 13px; font-weight: normal;">(96m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Invasión Conejos Blancos</div>
+            <div class="live-card-timer">04:00 hs <span style="font-size: 13px; font-weight: normal;">(171m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Dalibor, el desertor</div>
+            <div class="live-card-timer">02:20 hs <span style="font-size: 13px; font-weight: normal;">(71m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Fiebre del Oro</div>
+            <div class="live-card-timer">04:00 hs <span style="font-size: 13px; font-weight: normal;">(171m 14s)</span></div>
+          </div><div class="live-card status-normal">
+            <div class="live-card-title">Arena Masters</div>
+            <div class="live-card-timer">21:00 hs <span style="font-size: 13px; font-weight: normal;">(1191m 14s)</span></div>
+          </div></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30%;">Evento</th>
+          <th style="width: 25%;">Próxima Apertura</th>
+          <th style="width: 45%;">Horarios Programados</th>
+        </tr>
+      </thead>
+      <tbody id="eventsTableBody"><tr>
+          <td><strong>Blood Castle</strong></td>
+          <td><span class="next-time-highlight">02:30</span> <small style="color: var(--subtext);">(81m 14s)</small></td>
+          <td class="hours-cell">00:30 • 02:30 • 04:30 • 06:30 • 08:30 • 10:30 • 12:30 • 14:30 • 16:30 • 18:30 • 20:30 • 22:30</td>
+        </tr><tr>
+          <td><strong>Devil Square</strong></td>
+          <td><span class="next-time-highlight">01:30</span> <small style="color: var(--subtext);">(21m 14s)</small></td>
+          <td class="hours-cell">01:30 • 03:30 • 05:30 • 07:30 • 09:30 • 11:30 • 13:30 • 15:30 • 17:30 • 19:30 • 21:30 • 23:30</td>
+        </tr><tr>
+          <td><strong>Chaos Castle</strong></td>
+          <td><span class="next-time-highlight">04:35</span> <small style="color: var(--subtext);">(206m 14s)</small></td>
+          <td class="hours-cell">00:35 • 04:35 • 08:35 • 12:35 • 16:35 • 20:35</td>
+        </tr><tr>
+          <td><strong>Invasión Dragones Dorados</strong></td>
+          <td><span class="next-time-highlight">02:00</span> <small style="color: var(--subtext);">(51m 14s)</small></td>
+          <td class="hours-cell">00:00 • 01:00 • 02:00 • 03:00 • 04:00 • 05:00 • 06:00 • 07:00 • 08:00 • 09:00 • 10:00 • 11:00 • 12:00 • 13:00 • 14:00 • 15:00 • 16:00 • 17:00 • 18:00 • 19:00 • 20:00 • 21:00 • 22:00 • 23:00</td>
+        </tr><tr>
+          <td><strong>Invasión Dragones Rojos</strong></td>
+          <td><span class="next-time-highlight">01:50</span> <small style="color: var(--subtext);">(41m 14s)</small></td>
+          <td class="hours-cell">00:50 • 01:50 • 02:50 • 03:50 • 04:50 • 05:50 • 06:50 • 07:50 • 08:50 • 09:50 • 11:50 • 12:50 • 13:50 • 14:50 • 15:50 • 16:50 • 17:50 • 18:50 • 19:50 • 20:50 • 21:50 • 22:50 • 23:50</td>
+        </tr><tr>
+          <td><strong>Invasión Skeleton King</strong></td>
+          <td><span class="next-time-highlight">02:05</span> <small style="color: var(--subtext);">(56m 14s)</small></td>
+          <td class="hours-cell">00:05 • 01:05 • 02:05 • 03:05 • 04:05 • 05:05 • 06:05 • 07:05 • 08:05 • 09:05 • 10:05 • 11:05 • 12:05 • 13:05 • 14:05 • 15:05 • 16:05 • 17:05 • 18:05 • 19:05 • 20:05 • 21:05 • 22:05 • 23:05</td>
+        </tr><tr>
+          <td><strong>Invasión Mago Blanco</strong></td>
+          <td><span class="next-time-highlight">02:45</span> <small style="color: var(--subtext);">(96m 14s)</small></td>
+          <td class="hours-cell">00:45 • 02:45 • 04:45 • 08:45 • 10:45 • 12:45 • 14:45 • 16:45 • 18:45 • 20:45 • 22:45</td>
+        </tr><tr>
+          <td><strong>Invasión Conejos Blancos</strong></td>
+          <td><span class="next-time-highlight">04:00</span> <small style="color: var(--subtext);">(171m 14s)</small></td>
+          <td class="hours-cell">01:00 • 04:00 • 07:00 • 10:00 • 13:00 • 16:00 • 19:00 • 22:00</td>
+        </tr><tr>
+          <td><strong>Dalibor, el desertor</strong></td>
+          <td><span class="next-time-highlight">02:20</span> <small style="color: var(--subtext);">(71m 14s)</small></td>
+          <td class="hours-cell">02:20 • 05:20 • 08:20 • 11:20 • 14:20 • 17:20 • 20:20 • 23:20</td>
+        </tr><tr>
+          <td><strong>Fiebre del Oro</strong></td>
+          <td><span class="next-time-highlight">04:00</span> <small style="color: var(--subtext);">(171m 14s)</small></td>
+          <td class="hours-cell">00:00 • 04:00 • 08:00 • 12:00 • 16:00 • 20:00</td>
+        </tr><tr>
+          <td><strong>Arena Masters</strong></td>
+          <td><span class="next-time-highlight">21:00</span> <small style="color: var(--subtext);">(1191m 14s)</small></td>
+          <td class="hours-cell">21:00 • 21:10 • 21:20 • 21:30 • 21:40 • 21:50 • 22:00 • 22:10 • 22:20 • 22:30</td>
+        </tr><tr>
+          <td><strong>Invasión Ice Tantalos</strong></td>
+          <td><small style="color: var(--subtext);">Ver días</small></td>
+          <td class="hours-cell">12:30 (Dom) • 14:00 (Dom) • 16:30 (Mar) • 20:00 (Mar) • 21:10 (Vie) • 22:30 (Vie)</td>
+        </tr><tr>
+          <td><strong>Invasión Queen Boss</strong></td>
+          <td><small style="color: var(--subtext);">Ver días</small></td>
+          <td class="hours-cell">12:30 (Lun) • 14:00 (Lun) • 16:30 (Mié) • 20:00 (Mié) • 21:10 (Sáb) • 22:30 (Sáb)</td>
+        </tr><tr>
+          <td><strong>Happy Hour</strong></td>
+          <td><small style="color: var(--subtext);">Ver días</small></td>
+          <td class="hours-cell">10:10 (Lun) • 15:10 (Mié) • 21:10 (Vie)</td>
+        </tr></tbody>
+    </table>
+  </section>
+
+  <!-- SECCIÓN 3: BLOOD CASTLE NIVELES -->
+  <section id="bc">
+    <div class="section-title">🏰 Entrada a Blood Castle</div>
+    <p class="section-intro">
+      Requerimientos de nivel según clase de personaje.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:center;">Nivel</th>
+          <th style="text-align:center;">BK, SM, ELF</th>
+          <th style="text-align:center;">MG, DL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align:center;">BC 1</td><td style="text-align:center;">15 - 80</td><td style="text-align:center;">15 - 60</td></tr>
+        <tr><td style="text-align:center;">BC 2</td><td style="text-align:center;">81 - 130</td><td style="text-align:center;">61 - 110</td></tr>
+        <tr><td style="text-align:center;">BC 3</td><td style="text-align:center;">131 - 180</td><td style="text-align:center;">111 - 160</td></tr>
+        <tr><td style="text-align:center;">BC 4</td><td style="text-align:center;">181 - 230</td><td style="text-align:center;">161 - 210</td></tr>
+        <tr><td style="text-align:center;">BC 5</td><td style="text-align:center;">231 - 280</td><td style="text-align:center;">211 - 260</td></tr>
+        <tr><td style="text-align:center;">BC 6</td><td style="text-align:center;">281 - 330</td><td style="text-align:center;">261 - 310</td></tr>
+        <tr><td style="text-align:center;">BC 7</td><td style="text-align:center;">331 - 400</td><td style="text-align:center;">311 - 400</td></tr>
+        <tr class="vip-row"><td style="text-align:center;">BC 8 (VIP)</td><td style="text-align:center;">50 - 400</td><td style="text-align:center;">50 - 400</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.querySelector('.theme-toggle-btn');
+        if (document.body.classList.contains('dark-mode')) {
+            btn.innerHTML = '☀️ Modo Claro';
+        } else {
+            btn.innerHTML = '🌙 Modo Oscuro';
+        }
+    }
+
+    function switchSection(sectionId, btnElement) {
+        document.querySelectorAll('section').forEach(sec => sec.classList.remove('active-section'));
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if (!btn.classList.contains('theme-toggle-btn')) {
+                btn.classList.remove('active');
+            }
+        });
+
+        document.getElementById(sectionId).classList.add('active-section');
+        btnElement.classList.add('active');
+    }
+
+    const MAX_STAT = 32750;
+
+    const classProfiles = {
+        BK: {
+            stats: ['str', 'agi', 'vit', 'ene'],
+            baseStats: { str: 28, agi: 20, vit: 25, ene: 10 },
+            presets: {
+                "pvm": { name: "Leveo / Farm (PvM)", weights: { str: 0.47, agi: 0.31, vit: 0.16, ene: 0.06 }, priority: ['str', 'agi', 'vit', 'ene'] },
+                "pvp": { name: "Caza / Combo (PvP)", weights: { str: 0.35, agi: 0.35, vit: 0.25, ene: 0.05 }, priority: ['vit', 'agi', 'str', 'ene'] }
+            }
+        },
+        SM: {
+            stats: ['str', 'agi', 'vit', 'ene'],
+            baseStats: { str: 18, agi: 18, vit: 15, ene: 30 },
+            presets: {
+                "pvm": { name: "Leveo / Farm (PvM)", weights: { str: 0.02, agi: 0.26, vit: 0.12, ene: 0.60 }, priority: ['ene', 'agi', 'vit', 'str'] },
+                "support": { name: "Mana Shield Tank", weights: { str: 0.02, agi: 0.28, vit: 0.20, ene: 0.50 }, priority: ['ene', 'vit', 'agi', 'str'] }
+            }
+        },
+        ELF: {
+            stats: ['str', 'agi', 'vit', 'ene'],
+            baseStats: { str: 22, agi: 25, vit: 20, ene: 15 },
+            presets: {
+                "agile": { name: "Agility Elf (Damage)", weights: { str: 0.05, agi: 0.70, vit: 0.15, ene: 0.10 }, priority: ['agi', 'vit', 'ene', 'str'] },
+                "energy": { name: "Energy Elf (Buff)", weights: { str: 0.03, agi: 0.12, vit: 0.15, ene: 0.70 }, priority: ['ene', 'vit', 'agi', 'str'] }
+            }
+        },
+        MG: {
+            stats: ['str', 'agi', 'vit', 'ene'],
+            baseStats: { str: 26, agi: 26, vit: 26, ene: 26 },
+            presets: {
+                "warrior": { name: "MG Fuerza (Melee)", weights: { str: 0.55, agi: 0.25, vit: 0.15, ene: 0.05 }, priority: ['str', 'agi', 'vit', 'ene'] },
+                "wizard": { name: "MG Energía (Mago)", weights: { str: 0.05, agi: 0.25, vit: 0.15, ene: 0.55 }, priority: ['ene', 'agi', 'vit', 'str'] }
+            }
+        },
+        DL: {
+            stats: ['str', 'agi', 'vit', 'ene', 'cmd'],
+            baseStats: { str: 26, agi: 20, vit: 20, ene: 15, cmd: 25 },
+            presets: {
+                "pvm": { name: "Leveo / Fireburst", weights: { str: 0.40, agi: 0.30, vit: 0.15, ene: 0.10, cmd: 0.05 }, priority: ['str', 'agi', 'vit', 'ene', 'cmd'] },
+                "pet": { name: "Dark Horse Master", weights: { str: 0.25, agi: 0.25, vit: 0.15, ene: 0.15, cmd: 0.20 }, priority: ['cmd', 'str', 'agi', 'vit', 'ene'] }
+            }
+        }
+    };
+
+    const statNames = { str: 'Fuerza', agi: 'Agilidad', vit: 'Vitalidad', ene: 'Energía', cmd: 'Comando' };
+
+    let currentClass = 'SM';
+    let currentWeights = {};
+    let currentPriority = [];
+
+    function selectClass(className) {
+        currentClass = className;
+        document.querySelectorAll('.mu-tab').forEach(t => {
+            t.classList.toggle('active', t.dataset.class === className);
+        });
+
+        const profile = classProfiles[currentClass];
+        const presetSelect = document.getElementById('presetSelect');
+        presetSelect.innerHTML = '';
+        for (let key in profile.presets) {
+            let opt = document.createElement('option');
+            opt.value = key;
+            opt.innerText = profile.presets[key].name;
+            presetSelect.appendChild(opt);
+        }
+
+        applyPreset();
+    }
+
+    function applyPreset() {
+        const profile = classProfiles[currentClass];
+        const presetKey = document.getElementById('presetSelect').value || Object.keys(profile.presets)[0];
+        const preset = profile.presets[presetKey];
+
+        currentWeights = { ...preset.weights };
+        currentPriority = [...preset.priority];
+
+        updateCalculations();
+    }
+
+    function addResets(amount) {
+        const input = document.getElementById('resetInput');
+        let current = parseInt(input.value) || 0;
+        input.value = Math.max(0, current + amount);
+        updateCalculations();
+    }
+
+    function calculateDistribution(totalPoints, profile) {
+        let addedPoints = {};
+        profile.stats.forEach(s => addedPoints[s] = 0);
+
+        let activeStats = [...currentPriority];
+        let pointsToDistribute = totalPoints;
+
+        while (pointsToDistribute > 0 && activeStats.length > 0) {
+            let totalWeight = activeStats.reduce((sum, s) => sum + (currentWeights[s] || 0), 0);
+            if (totalWeight === 0) break;
+
+            let pointsAddedInLoop = 0;
+
+            for (let stat of activeStats) {
+                let share = ((currentWeights[stat] || 0) / totalWeight) * pointsToDistribute;
+                let potentialAdded = addedPoints[stat] + Math.floor(share);
+                let maxAddable = MAX_STAT - profile.baseStats[stat];
+
+                if (potentialAdded >= maxAddable) {
+                    let room = maxAddable - addedPoints[stat];
+                    addedPoints[stat] = maxAddable;
+                    pointsAddedInLoop += room;
+                    activeStats = activeStats.filter(s => s !== stat);
+                } else {
+                    addedPoints[stat] = potentialAdded;
+                    pointsAddedInLoop += Math.floor(share);
+                }
+            }
+
+            pointsToDistribute -= pointsAddedInLoop;
+
+            if (pointsToDistribute > 0) {
+                let assigned = false;
+                for (let stat of currentPriority) {
+                    let maxAddable = MAX_STAT - profile.baseStats[stat];
+                    if (addedPoints[stat] < maxAddable) {
+                        let space = maxAddable - addedPoints[stat];
+                        let add = Math.min(space, pointsToDistribute);
+                        addedPoints[stat] += add;
+                        pointsToDistribute -= add;
+                        assigned = true;
+                        if (pointsToDistribute === 0) break;
+                    }
+                }
+                if (!assigned) break;
+            }
+        }
+
+        return addedPoints;
+    }
+
+    function getStatGradient(pct) {
+      if (pct >= 100) {
+        return 'linear-gradient(90deg, #ff007f 0%, #ffea00 100%)';
+      } else if (pct >= 60) {
+        return 'linear-gradient(90deg, #7928ca 0%, #00f0ff 100%)';
+      } else {
+        return 'linear-gradient(90deg, #0070f3 0%, #00dfd8 100%)';
+      }
+    }
+
+    function updateCalculations() {
+        const profile = classProfiles[currentClass];
+        const resets = Math.max(0, parseInt(document.getElementById('resetInput').value) || 0);
+        const pointsPerReset = parseInt(document.getElementById('accountTypeSelect').value) || 420;
+        const totalPoints = resets * pointsPerReset;
+
+        document.getElementById('totalPointsDisplay').innerText = totalPoints.toLocaleString('es-ES');
+
+        const addedPoints = calculateDistribution(totalPoints, profile);
+
+        const container = document.getElementById('statsList');
+        container.innerHTML = '';
+
+        profile.stats.forEach(stat => {
+            const added = addedPoints[stat] || 0;
+            const totalStatVal = profile.baseStats[stat] + added;
+            const isMax = totalStatVal >= MAX_STAT;
+            const pct = Math.min(100, (totalStatVal / MAX_STAT) * 100);
+            const gradientStyle = getStatGradient(pct);
+
+            const statBlock = document.createElement('div');
+            statBlock.className = 'stat-block';
+            statBlock.innerHTML = `
+                <div class="stat-input-container">
+                    <div class="mu-stat-box">
+                        <div class="stat-progress-bg" style="width: ${pct}%; background: ${gradientStyle};"></div>
+                        <span class="mu-stat-name">${statNames[stat]}</span>
+                        <span class="mu-stat-value ${isMax ? 'maxed' : ''}">${totalStatVal.toLocaleString('es-ES')}</span>
+                    </div>
+                    <div class="btn-mu-add" title="Copiar /add${stat} ${added}" onclick="copySingleCommand('/add${stat} ${added}')">+</div>
+                </div>
+                <div class="stat-subtext-bar">
+                    <span>Base: ${profile.baseStats[stat]}</span>
+                    <span>Agregar: <span class="add-val">+${added.toLocaleString('es-ES')}</span></span>
+                </div>
+            `;
+            container.appendChild(statBlock);
+        });
+    }
+
+    function copySingleCommand(cmd) {
+        navigator.clipboard.writeText(cmd).then(() => {
+            alert(`Comando copiado: ${cmd}`);
+        });
+    }
+
+    /* SISTEMA DE EVENTOS */
+    const eventsData = [
+      { name: "Blood Castle", times: ["00:30","02:30","04:30","06:30","08:30","10:30","12:30","14:30","16:30","18:30","20:30","22:30"] },
+      { name: "Devil Square", times: ["01:30","03:30","05:30","07:30","09:30","11:30","13:30","15:30","17:30","19:30","21:30","23:30"] },
+      { name: "Chaos Castle", times: ["00:35","04:35","08:35","12:35","16:35","20:35"] },
+      { name: "Invasión Dragones Dorados", times: ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"] },
+      { name: "Invasión Dragones Rojos", times: ["00:50","01:50","02:50","03:50","04:50","05:50","06:50","07:50","08:50","09:50","11:50","12:50","13:50","14:50","15:50","16:50","17:50","18:50","19:50","20:50","21:50","22:50","23:50"] },
+      { name: "Invasión Skeleton King", times: ["00:05","01:05","02:05","03:05","04:05","05:05","06:05","07:05","08:05","09:05","10:05","11:05","12:05","13:05","14:05","15:05","16:05","17:05","18:05","19:05","20:05","21:05","22:05","23:05"] },
+      { name: "Invasión Mago Blanco", times: ["00:45","02:45","04:45","08:45","10:45","12:45","14:45","16:45","18:45","20:45","22:45"] },
+      { name: "Invasión Conejos Blancos", times: ["01:00","04:00","07:00","10:00","13:00","16:00","19:00","22:00"] },
+      { name: "Dalibor, el desertor", times: ["02:20","05:20","08:20","11:20","14:20","17:20","20:20","23:20"] },
+      { name: "Fiebre del Oro", times: ["00:00","04:00","08:00","12:00","16:00","20:00"] },
+      { name: "Arena Masters", times: ["21:00","21:10","21:20","21:30","21:40","21:50","22:00","22:10","22:20","22:30"] },
+      { name: "Invasión Ice Tantalos", times: ["12:30 (Dom)","14:00 (Dom)","16:30 (Mar)","20:00 (Mar)","21:10 (Vie)","22:30 (Vie)"] },
+      { name: "Invasión Queen Boss", times: ["12:30 (Lun)","14:00 (Lun)","16:30 (Mié)","20:00 (Mié)","21:10 (Sáb)","22:30 (Sáb)"] },
+      { name: "Happy Hour", times: ["10:10 (Lun)","15:10 (Mié)","21:10 (Vie)"] }
+    ];
+
+    function getNextEventTime(timesArray) {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const currentSeconds = now.getSeconds();
+
+      let nextTargetMinutes = null;
+
+      for (let timeStr of timesArray) {
+        if (!timeStr.includes(":")) continue;
+        const cleanTime = timeStr.split(" ")[0];
+        const [h, m] = cleanTime.split(":").map(Number);
+        const eventMinutes = h * 60 + m;
+
+        if (eventMinutes > currentMinutes || (eventMinutes === currentMinutes && currentSeconds === 0)) {
+          nextTargetMinutes = eventMinutes;
+          break;
+        }
+      }
+
+      if (nextTargetMinutes === null) {
+        const cleanTime = timesArray[0].split(" ")[0];
+        const [h, m] = cleanTime.split(":").map(Number);
+        nextTargetMinutes = (h * 60 + m) + 1440;
+      }
+
+      const diffMinutes = nextTargetMinutes - currentMinutes - 1;
+      const diffSeconds = 60 - currentSeconds;
+      
+      let totalDiffSec = (diffMinutes * 60) + diffSeconds;
+      if (currentSeconds === 0) totalDiffSec += 60;
+
+      const mRemaining = Math.floor(totalDiffSec / 60);
+      const sRemaining = totalDiffSec % 60;
+
+      const targetH = Math.floor((nextTargetMinutes % 1440) / 60).toString().padStart(2, '0');
+      const targetM = ((nextTargetMinutes % 1440) % 60).toString().padStart(2, '0');
+
+      return {
+        formattedTime: `${targetH}:${targetM}`,
+        countdownStr: `${mRemaining}m ${sRemaining < 10 ? '0' : ''}${sRemaining}s`,
+        totalSeconds: totalDiffSec
+      };
+    }
+
+    function updateLivePanel() {
+      const liveGrid = document.getElementById('liveEventsGrid');
+      liveGrid.innerHTML = '';
+
+      eventsData.forEach(ev => {
+        if (ev.times[0].length === 5 && ev.times[0].includes(":")) {
+          const nextObj = getNextEventTime(ev.times);
+          const card = document.createElement('div');
+          
+          card.className = 'live-card';
+          
+          if (nextObj.totalSeconds <= 1800) {
+            card.classList.add('status-danger');
+          } else if (nextObj.totalSeconds <= 3600) {
+            card.classList.add('status-warning');
+          } else {
+            card.classList.add('status-normal');
+          }
+
+          card.innerHTML = `
+            <div class="live-card-title">${ev.name}</div>
+            <div class="live-card-timer">${nextObj.formattedTime} hs <span style="font-size: 13px; font-weight: normal;">(${nextObj.countdownStr})</span></div>
+          `;
+          liveGrid.appendChild(card);
+        }
+      });
+
+      const tbody = document.getElementById('eventsTableBody');
+      tbody.innerHTML = '';
+
+      eventsData.forEach(ev => {
+        const tr = document.createElement('tr');
+        
+        let nextDisplay = "--";
+        if (ev.times[0].length === 5 && ev.times[0].includes(":")) {
+          const nextObj = getNextEventTime(ev.times);
+          nextDisplay = `<span class="next-time-highlight">${nextObj.formattedTime}</span> <small style="color: var(--subtext);">(${nextObj.countdownStr})</small>`;
+        } else {
+          nextDisplay = `<small style="color: var(--subtext);">Ver días</small>`;
+        }
+
+        tr.innerHTML = `
+          <td><strong>${ev.name}</strong></td>
+          <td>${nextDisplay}</td>
+          <td class="hours-cell">${ev.times.join(' • ')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    selectClass('SM');
+    updateLivePanel();
+    setInterval(updateLivePanel, 1000);
+</script>
+
+
+</body></html>
